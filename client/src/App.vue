@@ -1,13 +1,11 @@
 <template>
-  <header>
+  <header class="main-bg">
     <Navbar />
   </header>
-  <main>
+  <main class="main-bg">
     <router-view />
   </main>
-   <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
-  </footer>
+  
 </template>
 
 <script>
@@ -29,6 +27,10 @@ export default {
 
 :root{
   --main-height: calc(100vh - 32px - 64px);
+}
+
+.main-bg{
+  background-color: #2a2d3a;
 }
 
 
