@@ -31,14 +31,14 @@
                                     <h3 class="text-white">{{activeEvent.name}}</h3>
                                     <p>{{ activeEvent.location }}</p>
                                 </div>
-                                <div>
+                                <div v-if="activeEvent.startDate">
                                     <p class="text-end">
                                         <!-- TODO TIME BROKE??????????????? -->
                                         {{ activeEvent.startDate.toLocaleDateString() }}
                                     </p>
                                 <p class="text-end">
                                     <!-- TODO FIX TIME  -->
-                                    starting at {{ activeEvent.startDate.toLocaleTimeString() }}
+                                    starting at {{ activeEvent.startDate.toLocaleTimeString('en-US') }}
                                 </p>
                                 </div>
                         </div>
