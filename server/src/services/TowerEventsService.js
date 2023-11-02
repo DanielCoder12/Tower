@@ -3,6 +3,7 @@ import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class TowerEventsService {
 
+
     // TODO FIX THIS
     async editEvent(userId, eventId, body) {
         const towerEvent = await this.getEventById(eventId)

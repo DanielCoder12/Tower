@@ -1,7 +1,7 @@
 <template>
     
-    <!-- TODO ADD BACKGROUND IMAGE WITH A LOT OF BLUR LIKE ON FIGMA AND MAKE THE BLUR BLUE -->
-    <div class="m-3 card-bg rounded p-3 p-md-5">
+    <!-- TODO ASK HOW TO MAKE THIS NOT REPEAT AND PUT FILTER -->
+    <div class="m-3 card-bg shadow rounded bg-img p-3 p-md-5" :style="{backgroundImage: `url(${activeEvent.coverImg})`,}">
                 <div>
             <!-- TODO MAKE THIS ONLY SHOW ON YOUR ACCOUNT -->
                     <div v-if="account.id == activeEvent.creatorId && !activeEvent.isCanceled " class="text-end p-0 dropstart">
@@ -12,15 +12,15 @@
                 </i>
                 <div class="dropdown-menu" role="button" aria-labelledby="dropdownMenuButton">
                     <!-- TODO MAKE EDIT WORK -->
-                    <a class="dropdown-item">Edit event</a>
+                    <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#editEventModal">Edit event</a>
                     <!-- TODO FIX DELETE -->
-                    <p @click="cancelEvent(activeEvent.id)" role="button" class="text-danger dropdown-item">Cancel Event</p>
+                    <a @click="cancelEvent(activeEvent.id)" role="button" class="text-danger mb-0 dropdown-item">Cancel Event</a>
                 </div>
                     </div>
                 </div>
                     <section class="row">
                         <div class="col-12 col-md-4">
-                            <img class="img-fluid shadow" :src="activeEvent.coverImg" alt="">
+                            <img class="img-fluid shadow border" :src="activeEvent.coverImg" alt="">
                         </div>
                         <div class="col-12 col-md-8 d-flex flex-column justify-content-between">
                             <div>
@@ -34,11 +34,11 @@
                                 <div>
                                     <p class="text-end">
                                         <!-- TODO TIME BROKE??????????????? -->
-                                        <!-- {{ activeEvent.startDate.toLocaleDateString() }} -->
+                                        {{ activeEvent.startDate.toLocaleDateString() }}
                                     </p>
                                 <p class="text-end">
                                     <!-- TODO FIX TIME  -->
-                                    <!-- starting at {{ activeEvent.startDate.toLocaleTimeString() }} -->
+                                    starting at {{ activeEvent.startDate.toLocaleTimeString() }}
                                 </p>
                                 </div>
                         </div>
@@ -55,45 +55,66 @@
                             <div class="d-flex align-items-end" v-else>
                         <p class="bg-danger mb-0 fs-5 rounded px-5 py-1 ">Canceled</p>
                             </div>
-
-                                <button class="btn btn-warning fs-5 px-3">Grab a Ticket <i class="mdi mdi-account-plus"></i></button>
+<div>
+    <button @click="grabTicket(activeEvent.id)" :disabled="!account.id||activeEvent.isCanceled || activeEvent.capacity - activeEvent.ticketCount == 0" class="btn btn-warning fs-5 px-3">Grab a Ticket <i class="mdi mdi-account-plus"></i></button>
+</div>
                         </div>
                     </div>
                         </div>
                     </section>
+                    <!-- WORK ON THIS LAST  AND ALSO MAKE IT NOT MAKE THE CARD BIGGER  -->
+                        <p v-if="activeEvent.isAttending" class="text-end text-success mb-0">You are attending this event!</p>
     </div>
 </template>
 
 
 <script>
 import { AppState } from '../AppState';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watchEffect } from 'vue';
 import Pop from '../utils/Pop';
 import { towerEventsService } from '../services/towerEventsService';
 import { useRoute } from 'vue-router';
 import { logger } from '../utils/Logger';
+import { ticketsService } from '../services/TicketsService';
 export default {
     setup(){
         const route = useRoute()
-        onMounted(()=> {
+        watchEffect(()=> {
+            route.params.eventId
 getActiveEvent();
         });
+        watchEffect(()=>{
+        AppState.account
+        checkAttendingStatus()
+    })
+    function checkAttendingStatus(){
+        towerEventsService.checkAttendingStatus()
+    }
+
         async function getActiveEvent(){
             try {
 await towerEventsService.getActiveEvent(route.params.eventId)                
             } catch (error) {
-                Pop.error
+                Pop.error(error)
             }
         }
     return { 
         activeEvent: computed(() => AppState.activeEvent),
         account: computed(()=> AppState.account),
         async cancelEvent(eventId){
-            const yes = await Pop.confirm('Are you sure you would like to cancel this event?')
-            if(!yes){
-                return
+            try {
+                const yes = await Pop.confirm('Are you sure you would like to cancel this event?')
+                if(!yes){
+                    return
+                }
+    await towerEventsService.cancelEvent(eventId)
+            } catch (error) {
+                Pop.error(error)
             }
-await towerEventsService.cancelEvent(eventId)
+        },
+        async grabTicket(eventId){
+await ticketsService.grabTicket(eventId)
+Pop.success('Ticket Made!')
         }
     }
     }
@@ -102,9 +123,23 @@ await towerEventsService.cancelEvent(eventId)
 
 
 <style lang="scss" scoped>
-
+.bg-img{
+    object-fit: cover;
+    object-position: center;
+    background-size: cover;
+}
 .card-bg{
+    
     background-color: #474C61;
+}
+
+h3
+{
+    text-shadow: 1px 1px 3px black;
+}
+
+p{
+    text-shadow: 1px 1px 3px black;
 }
 
 

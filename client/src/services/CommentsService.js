@@ -8,6 +8,9 @@ class CommentsService{
     async getEventComments(eventId){
     const res = await api.get(`api/events/${eventId}/comments`)
     AppState.comments = res.data.map(c => new Comment(c))
+    
+        
+
 }
 
 async postComment(body){

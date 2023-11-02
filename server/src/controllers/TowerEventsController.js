@@ -17,7 +17,6 @@ export class TowerEventsController extends BaseController {
             .put('/:eventId', this.editEvent)
             .delete('/:eventId', this.destroyEvent)
     }
-
     async getEventComments(req, res, next) {
         try {
             const comments = await commentsService.getEventComments(req.params.eventId)

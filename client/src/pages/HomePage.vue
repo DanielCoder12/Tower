@@ -25,6 +25,21 @@ real events for real people.
       </div>
     </div>
   </section>
+
+<section class="row px-3 d-block d-md-none">
+  <div class="col-12 p-3">
+    <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   Change Category
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a @click="changeCategory(category)" v-for="category in categories" :key="category" class="dropdown-item" href="#">{{category}}</a>
+   
+  </div>
+</div>
+    </div>
+</section>
+
   <section class="row">
 <div v-for="towerEvent in towerEvents" :key="towerEvent.id" class="col-12 col-md-3">
 <TowerEvents :towerEvent="towerEvent" />
@@ -34,7 +49,7 @@ real events for real people.
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import Pop from '../utils/Pop';
 import {towerEventsService} from '../services/towerEventsService'
 import {AppState} from '../AppState'
@@ -42,11 +57,20 @@ import TowerEvents from '../components/TowerEvents.vue';
 
 export default {
     setup() {
+      const editable = ref('')
       const filteredCategory = ref('')
       const categories = ['All','Concert','Convention', 'Sport', 'Digital', 'Expo', 'Exhibit']
+      watchEffect(()=>{
+      editable.value
+      changeMobileCategory(editable.value)
+    })
         onMounted(() => {
             getAllEvents();
         });
+
+        async function changeMobileCategory(category){
+          filteredCategory.value = category
+        }
         async function getAllEvents() {
             try {
                 await towerEventsService.getAllEvents();
@@ -56,6 +80,7 @@ export default {
             }
         }
         return {
+          editable,
           filteredCategory,
           categories,
             towerEvents: computed(() => {

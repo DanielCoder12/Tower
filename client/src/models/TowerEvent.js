@@ -11,6 +11,7 @@ export class TowerEvent {
         this.isCanceled = data.isCanceled || false
         this.type = data.type
         this.ticketCount = data.ticketCount
+        this.isAttending = false
     }
 }
 
