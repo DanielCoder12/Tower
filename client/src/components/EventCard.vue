@@ -1,7 +1,7 @@
 <template>
     
     <!-- TODO ADD BACKGROUND IMAGE WITH A LOT OF BLUR LIKE ON FIGMA AND MAKE THE BLUR BLUE -->
-    <div class="m-3 bg-secondary rounded p-3 p-md-5">
+    <div class="m-3 card-bg rounded p-3 p-md-5">
                 <div>
             <!-- TODO MAKE THIS ONLY SHOW ON YOUR ACCOUNT -->
                     <div class="text-end p-0">
@@ -66,7 +66,6 @@ getActiveEvent();
         });
         async function getActiveEvent(){
             try {
-                logger.log('this ran')
 await towerEventsService.getActiveEvent(route.params.eventId)                
             } catch (error) {
                 Pop.error
@@ -79,5 +78,10 @@ await towerEventsService.getActiveEvent(route.params.eventId)
 
 
 <style lang="scss" scoped>
+
+.card-bg{
+    background-color: #474C61;
+}
+
 
 </style>

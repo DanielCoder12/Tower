@@ -17,8 +17,8 @@ real events for real people.
     </div>
   </section>
   <!-- TODO PUT FILTER BAR IN NAVBAR ON MOBILE -->
-  <section class="row">
-    <div class="col-12">
+  <section class="row d-md-block d-none">
+    <div class="col-12 ">
       <!-- TODO MAKE BUTTON LIGHT UP WHEN ON A CERTAIN CATEGORY -->
       <div class="d-flex m-3 justify-content-evenly card-bg" >
           <button @click="changeCategory(category)" class="btn fs-3 text-white" v-for="category in categories" :key="category">{{ category }}</button>
