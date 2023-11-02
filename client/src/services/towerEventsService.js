@@ -15,6 +15,12 @@ async getActiveEvent(eventId){
 const res = await api.get(`api/events/${eventId}`)
 AppState.activeEvent = new TowerEvent(res.data)
 }
+
+    async cancelEvent(eventId){
+        logger.log(eventId)
+    const res = await api.delete(`api/events/${eventId}`)
+    AppState.activeEvent.isCanceled = !AppState.activeEvent.isCanceled
+}
 }
 
 export const towerEventsService = new TowerEventsService()

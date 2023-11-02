@@ -4,11 +4,18 @@
     <div class="m-3 card-bg rounded p-3 p-md-5">
                 <div>
             <!-- TODO MAKE THIS ONLY SHOW ON YOUR ACCOUNT -->
-                    <div class="text-end p-0">
+                    <div v-if="account.id == activeEvent.creatorId && !activeEvent.isCanceled " class="text-end p-0 dropstart">
                         <!-- TODO FIX PADDING ON THIS -->
-                        <button class="btn btn-outline-dark">
-                            <i class="mdi mdi-dots-horizontal"></i>
-                        </button>
+                        <i class="mdi mdi-dots-horizontal text-end" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+
+                </i>
+                <div class="dropdown-menu" role="button" aria-labelledby="dropdownMenuButton">
+                    <!-- TODO MAKE EDIT WORK -->
+                    <a class="dropdown-item">Edit event</a>
+                    <!-- TODO FIX DELETE -->
+                    <p @click="cancelEvent(activeEvent.id)" role="button" class="text-danger dropdown-item">Cancel Event</p>
+                </div>
                     </div>
                 </div>
                     <section class="row">
@@ -41,8 +48,15 @@
                     </div>
                     <div>
                         <div class="d-flex justify-content-between">
-<p><span class="fs-5 fw-bold">{{ activeEvent.capacity - activeEvent.ticketCount }}</span> spots left</p>
-<button class="btn btn-warning fs-5 px-3">Grab a Ticket <i class="mdi mdi-account-plus"></i></button>
+                            <div v-if="!activeEvent.isCanceled">
+                                <p v-if="activeEvent.capacity - activeEvent.ticketCount > 0"><span class="fs-5 text-primary fw-bold">{{ activeEvent.capacity - activeEvent.ticketCount }}</span> spots left</p>
+                                <p v-else><span class="fs-5 fw-bold text-danger">0</span> spots left</p>
+                            </div>
+                            <div class="d-flex align-items-end" v-else>
+                        <p class="bg-danger mb-0 fs-5 rounded px-5 py-1 ">Canceled</p>
+                            </div>
+
+                                <button class="btn btn-warning fs-5 px-3">Grab a Ticket <i class="mdi mdi-account-plus"></i></button>
                         </div>
                     </div>
                         </div>
@@ -71,7 +85,17 @@ await towerEventsService.getActiveEvent(route.params.eventId)
                 Pop.error
             }
         }
-    return { activeEvent: computed(() => AppState.activeEvent) }
+    return { 
+        activeEvent: computed(() => AppState.activeEvent),
+        account: computed(()=> AppState.account),
+        async cancelEvent(eventId){
+            const yes = await Pop.confirm('Are you sure you would like to cancel this event?')
+            if(!yes){
+                return
+            }
+await towerEventsService.cancelEvent(eventId)
+        }
+    }
     }
 };
 </script>

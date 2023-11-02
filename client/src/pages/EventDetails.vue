@@ -15,13 +15,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-8">
-           <div>
+        <!-- TODO HIDE CREATE COMMENT WHEN NOT LOGGED IN -->
+        <div class="col-12 col-md-8">
+           <div class="m-3 m-md-0">
             <p>What are people saying</p>
            </div>
-           <div class="card-bg">
+           <div class="card-bg m-3 m-md-0">
                <form @submit.prevent="postComment()" action="">
-            <div class="px-5 py-3">
+            <div class="px-3 px-md-5 py-3">
                 <!-- TODO MAKE THIS FIGMA GREEN -->
                 <p class="text-end text-success">Join the conversation</p>
                 <textarea required v-model="editable.body" placeholder="Tell the people..." name="body" class="form-control" id="body" cols="15" rows="5"></textarea>
