@@ -70,7 +70,7 @@
                         <p class="bg-danger mb-0 fs-5 rounded px-5 py-1 ">Canceled</p>
                             </div>
 <div>
-    <button @click="grabTicket(activeEvent.id)" :disabled="!account.id||activeEvent.isCanceled || activeEvent.capacity - activeEvent.ticketCount == 0" class="btn btn-warning fs-5 px-3">Grab a Ticket <i class="mdi mdi-account-plus"></i></button>
+    <button @click="grabTicket(activeEvent.id)" :disabled="!account.id||activeEvent.isCanceled || activeEvent.capacity - activeEvent.ticketCount == 0" class="btn btn-warning ms-2 fs-5 px-3">Grab a Ticket <i class="mdi mdi-account-plus"></i></button>
 </div>
                         </div>
                     </div>
