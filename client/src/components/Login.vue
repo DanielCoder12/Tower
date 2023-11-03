@@ -49,8 +49,7 @@ export default {
       async logout() {
         AuthService.logout({ returnTo: window.location.origin })
       }
-    }
-  }
+    }  }
 }
 </script>
 

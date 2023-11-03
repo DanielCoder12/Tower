@@ -4,7 +4,7 @@
         <!-- TODO FIX STYLING ON THIS  -->
     <div  class="div-height card-border rounded d-flex align-items-end card-bg" 
     :style="{backgroundImage: `url(${towerEvent.coverImg})`}">
-        <div class=" blur-bg rounded-top w-100">
+        <div class=" blur-bg text-break rounded-top w-100">
             <!-- <img class="img-fluid" :src="towerEvent.coverImg" alt=""> -->
             <p class="mb-0 text-white ps-3 fs-4">{{ towerEvent.name }}</p>
             <p class="mb-0 text-light ps-3 ">{{ towerEvent.location }}</p>

@@ -1,6 +1,5 @@
 import { AppState } from "../AppState"
 import { TowerEvent } from "../models/TowerEvent"
-import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 class TowerEventsService {
@@ -32,20 +31,17 @@ AppState.activeEvent = new TowerEvent(res.data)
 }
 
     async cancelEvent(eventId){
-        logger.log(eventId)
-    const res = await api.delete(`api/events/${eventId}`)
+    await api.delete(`api/events/${eventId}`)
     AppState.activeEvent.isCanceled = !AppState.activeEvent.isCanceled
 }
 
 async createEvent(payload){
     const res = await api.post('api/events', payload)
-    logger.log('new event', res.data)
     return res.data._id
 }
 
     async editEvent(body, eventId){
     const res = await api.put(`api/events/${eventId}`, body)
-    logger.log('edited event', res.data)
     AppState.activeEvent = new TowerEvent(res.data)
 }
 

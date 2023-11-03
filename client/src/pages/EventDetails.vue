@@ -26,7 +26,7 @@
                 <!-- TODO MAKE THIS FIGMA GREEN -->
                 <p class="text-end text-success">Join the conversation</p>
                 <div v-if="!account.id">
-<p class="text-center">
+<p @click="login" role="button" class="text-center">
     Create an account to comment
 </p>
                 </div>
@@ -63,6 +63,7 @@ import EventCard from '../components/EventCard.vue';
 import {ticketsService} from '../services/TicketsService'
 import {commentsService} from '../services/CommentsService'
 import CommentCard from '../components/CommentCard.vue';
+import { AuthService } from '../services/AuthService';
 export default {
     setup() {
         const editable = ref({})
@@ -99,7 +100,10 @@ async function getPeopleGoingToEvent(){
                 body.eventId = route.params.eventId
                 await commentsService.postComment(body)
                 editable.value = {}
-            }
+            },
+            login() {
+        AuthService.loginWithPopup()
+      },
         };
     },
     components: { EventCard, CommentCard }

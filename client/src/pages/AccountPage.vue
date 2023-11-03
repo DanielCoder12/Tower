@@ -32,10 +32,10 @@
 import { computed, onMounted } from 'vue';
 import { AppState } from '../AppState';
 import TowerEvents from '../components/TowerEvents.vue';
-import { logger } from '../utils/Logger';
-import Pop from '../utils/Pop';
+// import { logger } from '../utils/Logger';
+// import Pop from '../utils/Pop';
 import EventTicket from '../components/EventTicket.vue';
-import {towerEventsService} from '../services/towerEventsService'
+// import {towerEventsService} from '../services/towerEventsService'
 
 export default {
     setup() {
@@ -43,14 +43,14 @@ export default {
             // getMyEvents()
             
         });
-        async function getMyEvents() {
-            try {
-               await towerEventsService.getMyEvents()
-            }
-            catch (error) {
-                Pop.error(error);
-            }
-        }
+        // async function getMyEvents() {
+        //     try {
+        //        await towerEventsService.getMyEvents()
+        //     }
+        //     catch (error) {
+        //         Pop.error(error);
+        //     }
+        // }
         return {
             account: computed(() => AppState.account),
             tickets: computed(() => AppState.Mytickets),

@@ -32,12 +32,12 @@
                         
                         <div class="mb-3">
                             <label for="startDate" class="form-label">Event Starting Date</label>
-                            <input v-model="editable.startDate" type="date" class="form-control" id="startDate">
+                            <input v-model="editable.startDate" required type="date" class="form-control" id="startDate">
                             </div>
                             <div class="mb-3 ">
                                 <!-- <input type="select" class="form-check-input" id="type"> -->
                                 <label for="type" class="form-label">Category</label>
-                                <select v-model="editable.type" id="type" class="form-control">
+                                <select required v-model="editable.type" id="type" class="form-control">
                                     <option v-for="category in categories" :key="category"> {{ category }}</option>
                                     
                                 </select>
@@ -70,6 +70,7 @@ import { computed, reactive, onMounted, ref } from 'vue';
 import { towerEventsService } from '../services/towerEventsService';
 import { logger } from '../utils/Logger';
 import { useRouter } from 'vue-router';
+import { Modal } from 'bootstrap';
 export default {
     setup(){
         const router = useRouter()
@@ -82,6 +83,8 @@ async createEvent(){
     const payload = editable.value
     logger.log(payload)
     const eventId = await towerEventsService.createEvent(payload)
+    Modal.getOrCreateInstance('#createEventModal').hide() 
+    editable.value = {}
     router.push({name: 'EventDetails', params: {eventId: eventId}})
 },
 

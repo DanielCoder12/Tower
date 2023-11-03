@@ -1,9 +1,8 @@
 <template>
     
-    <!-- TODO ASK HOW TO MAKE THIS NOT REPEAT AND PUT FILTER -->
+    <!-- TODO PUT FILTER -->
     <div class="m-3 card-bg shadow rounded bg-img p-3 p-md-5" :style="{backgroundImage: `url(${activeEvent.coverImg})`,}">
                 <div>
-            <!-- TODO MAKE THIS ONLY SHOW ON YOUR ACCOUNT -->
                     <div v-if="account.id == activeEvent.creatorId && !activeEvent.isCanceled " class="text-end p-0 dropstart">
                         <!-- TODO FIX PADDING ON THIS -->
                         <i class="mdi mdi-dots-horizontal text-end" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
@@ -11,39 +10,54 @@
 
                 </i>
                 <div class="dropdown-menu" role="button" aria-labelledby="dropdownMenuButton">
-                    <!-- TODO MAKE EDIT WORK -->
                     <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#editEventModal">Edit event</a>
-                    <!-- TODO FIX DELETE -->
                     <a @click="cancelEvent(activeEvent.id)" role="button" class="text-danger mb-0 dropdown-item">Cancel Event</a>
                 </div>
                     </div>
                 </div>
                     <section class="row">
                         <div class="col-12 col-md-4">
+                            <div class="d-block d-md-none text-break">
+                                    <h3 class="text-white">{{activeEvent.name}}</h3>
+                                    <p>{{ activeEvent.location }}</p>
+                                </div>
                             <img class="img-fluid shadow border" :src="activeEvent.coverImg" alt="">
                         </div>
                         <div class="col-12 col-md-8 d-flex flex-column justify-content-between">
                             <div>
 
                             
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h3 class="text-white">{{activeEvent.name}}</h3>
+                            <div class="d-none d-md-flex justify-content-between">
+                                <div class="">
+                                    <h3 class="text-white text-break">{{activeEvent.name}}</h3>
                                     <p>{{ activeEvent.location }}</p>
                                 </div>
-                                <div v-if="activeEvent.startDate">
+                               
+                                <div class="" v-if="activeEvent.startDate">
                                     <p class="text-end">
-                                        <!-- TODO TIME BROKE??????????????? -->
-                                        {{ activeEvent.startDate.toLocaleDateString() }}
+                                        {{ activeEvent.startDate.toLocaleDateString('en-US') }}
                                     </p>
                                 <p class="text-end">
-                                    <!-- TODO FIX TIME  -->
-                                    starting at {{ activeEvent.startDate.toLocaleTimeString('en-US') }}
+                                    starting at {{ activeEvent.startDate.toLocaleTimeString('en-US').substring(0,2)  }}
                                 </p>
                                 </div>
                         </div>
+
+                        <div class="d-flex d-md-none justify-content-between" v-if="activeEvent.startDate">
+                                    <div>
+                                        <p class="">
+                                            {{ activeEvent.startDate.toLocaleDateString('en-US') }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="">
+                                            starting at {{ activeEvent.startDate.toLocaleTimeString('en-US').substring(0,2)  }}
+                                        </p>
+                                    </div>
+                                </div>
+
                         <div>
-                            <p class="text-light">{{ activeEvent.description }}</p>
+                            <p class="text-light text-break">{{ activeEvent.description }}</p>
                         </div>
                     </div>
                     <div>
@@ -70,11 +84,11 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, onMounted, watchEffect } from 'vue';
+import { computed, watchEffect } from 'vue';
 import Pop from '../utils/Pop';
 import { towerEventsService } from '../services/towerEventsService';
 import { useRoute } from 'vue-router';
-import { logger } from '../utils/Logger';
+// import { logger } from '../utils/Logger';
 import { ticketsService } from '../services/TicketsService';
 export default {
     setup(){
