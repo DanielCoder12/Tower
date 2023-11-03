@@ -12,7 +12,7 @@
                             <span v-if="comment.isAttending" class="ps-2 text-primary"> Attending This Event</span>
                         </div>
                         <div v-if="account.id == comment.creatorId">
-                            <i @click="destroyComment(comment.id)" role="button" class="mdi mdi-delete text-danger"></i>
+                            <i @click="destroyComment(comment.id)" title="Delete" role="button" class="mdi mdi-delete text-danger"></i>
                         </div>
                     </div>
                     <div class="d-flex flex-wrap">

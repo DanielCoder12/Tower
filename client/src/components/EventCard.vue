@@ -127,8 +127,12 @@ await towerEventsService.getActiveEvent(route.params.eventId)
             }
         },
         async grabTicket(eventId){
-await ticketsService.grabTicket(eventId)
-Pop.success('Ticket Made!')
+            try {
+                await ticketsService.grabTicket(eventId)
+                Pop.success('Ticket Made!')
+            } catch (error) {
+                Pop.error(error)
+            }
         }
     }
     }

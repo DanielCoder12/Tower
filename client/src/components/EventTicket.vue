@@ -45,12 +45,16 @@ export default {
     return { 
 
        async unAttendEvent(ticketId){
-        const yes = await Pop.confirm('are you sure you would like to delete your ticket for this event?')
-        if(!yes){
-            return
+        try {
+          const yes = await Pop.confirm('are you sure you would like to delete your ticket for this event?')
+          if(!yes){
+              return
+          }
+          await ticketsService.unAttendEvent(ticketId)
+          Pop.success('ticket deleted!')
+        } catch (error) {
+          Pop.error(error)
         }
-        await ticketsService.unAttendEvent(ticketId)
-        Pop.success('ticket deleted!')
        }
      }
     }
