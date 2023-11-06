@@ -20,8 +20,8 @@ real events for real people.
   <section class="row d-md-block d-none">
     <div class="col-12 ">
       <!-- TODO MAKE BUTTON LIGHT UP WHEN ON A CERTAIN CATEGORY -->
-      <div class="d-flex m-3 justify-content-evenly card-bg" >
-          <button @click="changeCategory(category)" class="btn fs-3 text-white" v-for="category in categories" :key="category">{{ category }}</button>
+      <div class="d-flex m-3 justify-content-evenly shadow card-bg" >
+          <button @click="changeCategory(category)" v-bind:class="{'text-success': filteredCategory == category}" class="btn fs-3 text-white" v-for="category in categories" :key="category">{{ category }}</button>
       </div>
     </div>
   </section>
@@ -30,7 +30,7 @@ real events for real people.
   <div class="col-12 p-3">
     <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   Change Category
+  {{ filteredCategory }}
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <a @click="changeCategory(category)" v-for="category in categories" :key="category" class="dropdown-item" href="#">{{category}}</a>
@@ -65,7 +65,8 @@ export default {
       changeMobileCategory(editable.value)
     })
         onMounted(() => {
-            getAllEvents();
+          getAllEvents();
+        
         });
 
         async function changeMobileCategory(category){
@@ -74,6 +75,7 @@ export default {
         async function getAllEvents() {
             try {
                 await towerEventsService.getAllEvents();
+                filteredCategory.value = 'All'
             }
             catch (error) {
                 Pop.error(error);
